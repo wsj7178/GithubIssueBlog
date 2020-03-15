@@ -39,6 +39,7 @@ export const actions = {
           if (error) reject(error)
           Log.log('initPost listIssues result=', result)
           result.forEach(issue => {
+            if (!isPostIssue(issue)) return
             let post = {
               id: issue.number,
               title: issue.title,
@@ -72,6 +73,21 @@ export const actions = {
   }
 }
 
+/**
+ * categories: 로 시작하는 label list 반환
+ */
 const getCategories = (labels) => {
   return labels.filter(label => /categories:.+/.test(label.name))
+}
+
+/**
+ * 해당 Issue 가 Post 인지 반환
+ * @param {Object} issue
+ *
+ * @return {Boolean}
+ */
+const isPostIssue = (issue) => {
+  /** @type {*[]} */
+  let labels = issue.labels
+  return labels.findIndex(label => label.name === 'githubblog:post') >= 0
 }
