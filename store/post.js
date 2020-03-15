@@ -25,12 +25,13 @@ export const mutations = {
 export const actions = {
   initPost(context) {
     return new Promise(async (resolve, reject) => {
-      if (process.server) return
+      if (process.server) return  // server process에서 generate 시에는 실행 안됨
       const gh = new Github()
       let response = await axios({
         url: '/config/github.json',
       })
       let githubConfig = response.data
+      Log.debug('githubConfig: ', githubConfig)
       const issueManager = gh.getIssues(githubConfig.user, githubConfig.repo)
       let promises = []
       let list = []
@@ -39,7 +40,7 @@ export const actions = {
           if (error) reject(error)
           Log.log('initPost listIssues result=', result)
           result.forEach(issue => {
-            if (!isPostIssue(issue)) return
+            if (!isPostIssue(issue) || !hasWriterPermission(issue, githubConfig)) return
             let post = {
               id: issue.number,
               title: issue.title,
@@ -90,4 +91,16 @@ const isPostIssue = (issue) => {
   /** @type {*[]} */
   let labels = issue.labels
   return labels.findIndex(label => label.name === 'githubblog:post') >= 0
+}
+
+/**
+ * issue 의 작성자가 글 작성 권한을 가지고 있는지 확인
+ *
+ * @param {*} issue
+ * @param {*} config
+ */
+const hasWriterPermission = (issue, config) => {
+  /** @type {String[]} */
+  let writers = config.writer
+  return writers.findIndex(writer => writer === issue.user.login) >= 0
 }
