@@ -1,6 +1,14 @@
-# githubblog
+# GithubIssueBlog
 
-> Nuxt.js project
+> This blog uses Github's Issue tracker and Github Pages with Nuxt.js
+
+## quick setup
+
+1. fork this repository
+2. edit static/config/github.json  
+edit `user` and `repo` like this, github.com/{user}/{repo}  
+Please write github user id for `writers`.
+3. You can change your page's title and description in nuxt.config.js
 
 ## Build Setup
 
@@ -19,5 +27,32 @@ $ npm start
 $ npm run generate
 ```
 
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+# deploy
 
+## When using Github Pages of user or group accounts (* .github.io repository)
+https://medium.com/@robertodev/nuxt-js-and-user-github-pages-fb4c82d7b84e  
+I referenced the post above. I recommend reading the above post first.
+
+1. generate static web application
+``` bash
+$ npm run generate
+```
+
+2. clone your Github Pages repository on `../dist` directory
+``` bash
+$ git clone https://github.com/username/username.github.io deploy
+```
+
+3. deploy your website
+``` bash
+$ make deploy
+```
+
+## when using Repository's Github Pages
+https://nuxtjs.org/faq/github-pages  
+I referenced the guide above.
+
+``` bash
+$ npm run generate
+$ npm run deploy
+```
