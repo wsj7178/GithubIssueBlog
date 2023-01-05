@@ -17,7 +17,7 @@
     "axios": "^0.19.2",
     "github-api": "^3.3.0",
     "markdown": "^0.5.0",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.15.8"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.9.1",
